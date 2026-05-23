@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Django Blog Portfolio{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Article Header -->
+            <div class="article-header">
+                <h1>{{ post.title }}</h1>
+                <div class="article-meta">
+                    <i class="fas fa-user"></i> <strong>{{ post.author.get_full_name|default:post.author.username }}</strong>
+                    <span class="ms-3"><i class="fas fa-calendar"></i> {{ post.published_at|date:"F d, Y" }}</span>
+                    <span class="ms-3"><i class="fas fa-folder"></i> <a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a></span>
+                    <span class="views-count"><i class="fas fa-eye"></i> {{ post.views_count }} views</span>
+                </div>
+            </div>
+
+            <!-- Featured Image -->
+            {% if post.featured_image %}
+            <div class="text-center mb-4">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="img-fluid" style="max-height: 500px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+            </div>
+            {% endif %}
+
+            <!-- Article Content -->
+            <article class="article-content">
+                {{ post.content|linebreaks }}
+
+                <!-- Tags -->
+                {% if post.tags.all %}
+                <div class="mt-5 pt-4 border-top">
+                    <h6>Tags:</h6>
+                    {% for posttag in post.tags.all %}
+                        <a href="{{ posttag.tag.get_absolute_url }}" class="tag-badge">
+                            <i class="fas fa-tag"></i> {{ posttag.tag.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </article>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h3><i class="fas fa-comments"></i> Comments ({{ comments|length }})</h3>
+                
+                {% if comments %}
+                    <div class="mt-4">
+                        {% for comment in comments %}
+                        <div class="comment">
+                            <div class="comment-author">{{ comment.author }}</div>
+                            <div class="comment-date"><i class="fas fa-calendar-alt"></i> {{ comment.created_at|date:"F d, Y \a\t g:i A" }}</div>
+                            <div>{{ comment.content }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">No comments yet. Be the first to comment!</p>
+                {% endif %}
+
+                <!-- Comment Form -->
+                <div class="mt-5 pt-4 border-top">
+                    <h5>Leave a Comment</h5>
+                    <form method="post" class="mt-3">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" name="author" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea name="content" class="form-control" rows="4" placeholder="Your Comment..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Post Comment
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <!-- Author Info -->
+            <div class="sidebar mb-4">
+                <h5><i class="fas fa-user-circle"></i> Author</h5>
+                <div class="text-center mb-3">
+                    <div style="font-size: 3rem; color: var(--secondary-color);"><i class="fas fa-user-circle"></i></div>
+                    <h6 class="mt-3" style="color: var(--primary-color);">{{ post.author.get_full_name|default:post.author.username }}</h6>
+                    <p class="text-muted small">Posted {{ post.published_at|timesince }} ago</p>
+                </div>
+            </div>
+
+            <!-- Related Posts -->
+            {% if related_posts %}
+            <div class="sidebar mb-4">
+                <h5><i class="fas fa-link"></i> Related Posts</h5>
+                <ul class="list-unstyled">
+                    {% for related_post in related_posts %}
+                    <li class="mb-3">
+                        <a href="{{ related_post.get_absolute_url }}" style="text-decoration: none; color: inherit;">
+                            {% if related_post.featured_image %}
+                                <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px; margin-bottom: 8px;">
+                            {% else %}
+                                <div style="width: 100%; height: 120px; background-color: #ecf0f1; border-radius: 5px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="color: #bdc3c7;"></i>
+                                </div>
+                            {% endif %}
+                            <strong style="color: var(--primary-color); display: block; margin-bottom: 5px;">{{ related_post.title|truncatewords:8 }}</strong>
+                            <small class="text-muted">{{ related_post.published_at|date:"M d, Y" }}</small>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Categories -->
+            <div class="sidebar">
+                <h5><i class="fas fa-folder"></i> Categories</h5>
+                <ul class="category-list">
+                    {% for category in categories %}
+                    <li>
+                        <a href="{{ category.get_absolute_url }}">
+                            {{ category.name }}
+                            <span class="float-end badge bg-secondary">{{ category.posts.count }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .comment-form-hidden {
+        display: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Professional Portfolio - PortfolioCorp{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+            <div class="hero-content">
+                <h1>Transform Your Business with Innovation</h1>
+                <p>Cutting-edge solutions tailored to your unique challenges. We deliver results that matter.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Get Started</button>
+                    <button class="btn btn-outline">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <svg style="width: 100%; height: 300px;" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="400" fill="#F5F7FA" rx="10"/>
+                    <rect x="50" y="50" width="300" height="200" fill="#00A99D" rx="5" opacity="0.1"/>
+                    <circle cx="200" cy="200" r="80" fill="#00A99D" opacity="0.15"/>
+                    <path d="M 100 250 Q 200 200 300 250" stroke="#00A99D" stroke-width="2" fill="none" opacity="0.3"/>
+                    <text x="200" y="360" font-size="16" fill="#00A99D" text-anchor="middle" font-weight="600">Premium Corporate Solutions</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Project -->
+{% if featured_post %}
+<section class="featured-container" style="margin: 80px 0;">
+    <div class="container" style="grid-column: 1 / -1;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+            <div class="featured-image">
+                {% if featured_post.featured_image %}
+                    <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}">
+                {% else %}
+                    <div style="width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                        <i class="fas fa-image" style="font-size: 3rem; opacity: 0.5;"></i>
+                    </div>
+                {% endif %}
+                <div class="featured-badge">Featured Project</div>
+            </div>
+            <div class="featured-content">
+                <h2>{{ featured_post.title }}</h2>
+                <p>{{ featured_post.excerpt }}</p>
+                <ul class="feature-list">
+                    <li>Innovative approach to problem-solving</li>
+                    <li>Data-driven decision making</li>
+                    <li>Measurable results and ROI</li>
+                    <li>Dedicated support and expertise</li>
+                </ul>
+                <a href="{{ featured_post.get_absolute_url }}" class="btn btn-primary">Read Case Study</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Services Section -->
+<section class="services" id="services">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Services</h2>
+            <p>Comprehensive solutions designed to accelerate your business growth and market competitiveness</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Strategic Consulting</h3>
+                <p>Expert guidance to navigate complex business challenges and identify new opportunities for growth.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Technology Development</h3>
+                <p>Custom software solutions built with cutting-edge technologies to streamline your operations.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Brand Design</h3>
+                <p>Create a powerful brand identity that resonates with your target audience and stands out.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Marketing Strategy</h3>
+                <p>Data-driven marketing campaigns that increase visibility, engagement, and conversion rates.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Security Solutions</h3>
+                <p>Comprehensive security strategies to protect your assets and ensure business continuity.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Business Support</h3>
+                <p>24/7 dedicated support and consultation to ensure your success at every step.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section class="portfolio">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Portfolio</h2>
+            <p>Showcasing our latest projects and successful client partnerships</p>
+        </div>
+        <div class="portfolio-grid">
+            {% if posts %}
+                {% for post in posts|slice:":6" %}
+                <div class="portfolio-item">
+                    {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="portfolio-image">
+                    {% else %}
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-briefcase" style="font-size: 2.5rem; color: white; opacity: 0.5;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="portfolio-overlay">
+                        <h4>{{ post.title }}</h4>
+                        <p>{{ post.excerpt|truncatewords:15 }}</p>
+                        <a href="{{ post.get_absolute_url }}" class="btn btn-primary" style="margin-top: 1rem;">View Project</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>150+</h3>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-item">
+                <h3>98%</h3>
+                <div class="stat-label">Client Satisfaction</div>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <div class="stat-label">Team Members</div>
+            </div>
+            <div class="stat-item">
+                <h3>15+</h3>
+                <div class="stat-label">Years Experience</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team" id="team">
+    <div class="container">
+        <div class="section-header">
+            <h2>Meet Our Team</h2>
+            <p>Experienced professionals dedicated to delivering excellence</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="team-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4>Sarah Johnson</h4>
+                    <div class="team-position">CEO & Founder</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d;">Visionary leader with 15+ years of industry experience</p>
+                    <div class="team-social">
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member">
+                <div class="team-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4>Michael Chen</h4>
+                    <div class="team-position">CTO</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d;">Technology innovator and software architect</p>
+                    <div class="team-social">
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member">
+                <div class="team-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4>Emily Rodriguez</h4>
+                    <div class="team-position">Creative Director</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d;">Design expert passionate about user experience</p>
+                    <div class="team-social">
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="Dribbble"><i class="fab fa-dribbble"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member">
+                <div class="team-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4>David Smith</h4>
+                    <div class="team-position">Business Development</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d;">Strategic partnerships and growth specialist</p>
+                    <div class="team-social">
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Blog Posts -->
+<section class="posts-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Latest Insights</h2>
+            <p>Stay updated with industry trends and expert advice</p>
+        </div>
+        <div class="posts-grid">
+            {% if posts %}
+                {% for post in posts|slice:":3" %}
+                <article class="post-card">
+                    {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="post-thumbnail">
+                    {% else %}
+                        <div style="width: 100%; height: 220px; background: linear-gradient(135deg, #00A99D 0%, #008B8A 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-newspaper" style="font-size: 2rem; opacity: 0.5;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="post-body">
+                        <span class="post-category">{{ post.category.name }}</span>
+                        <h3 class="post-title"><a href="{{ post.get_absolute_url }}" style="color: inherit; text-decoration: none;">{{ post.title }}</a></h3>
+                        <p class="post-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+                        <div class="post-meta">
+                            <div class="post-author">
+                                <div class="post-author-avatar">{{ post.author.first_name|first }}</div>
+                                <span>{{ post.author.username }}</span>
+                            </div>
+                            <span>{{ post.published_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <h2>Ready to Transform Your Business?</h2>
+        <p>Let's work together to achieve your goals and drive meaningful growth</p>
+        <button class="btn btn-primary" style="background-color: white; color: var(--primary-color); margin-top: 1rem;">Schedule a Consultation</button>
+    </div>
+</section>
+
+{% endblock %}

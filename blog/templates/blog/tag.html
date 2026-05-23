@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ tag.name }} - Django Blog Portfolio{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1><i class="fas fa-tag"></i> Tag: {{ tag.name }}</h1>
+        <p>Posts tagged with <strong>{{ tag.name }}</strong></p>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8">
+            {% if posts %}
+                <div class="row">
+                    {% for post in posts %}
+                    <div class="col-md-6 mb-4">
+                        <div class="post-card">
+                            {% if post.featured_image %}
+                                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="post-card-img">
+                            {% else %}
+                                <div class="post-card-img" style="background-color: #ecf0f1; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="font-size: 2rem; color: #bdc3c7;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="post-card-body">
+                                <h5 class="post-card-title">{{ post.title }}</h5>
+                                <p class="post-card-excerpt">{{ post.excerpt|truncatewords:15 }}</p>
+                                <div class="post-meta">
+                                    <i class="fas fa-user"></i> {{ post.author.username }}
+                                    <br>
+                                    <i class="fas fa-calendar"></i> {{ post.published_at|date:"M d, Y" }}
+                                    <span class="views-count"><i class="fas fa-eye"></i> {{ post.views_count }}</span>
+                                </div>
+                                <a href="{{ post.get_absolute_url }}" class="btn-read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-posts">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No posts with this tag</h3>
+                    <p>No posts have been tagged with <strong>{{ tag.name }}</strong> yet.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <!-- Tag Info -->
+            <div class="sidebar mb-4">
+                <h5><i class="fas fa-tag"></i> Tag Info</h5>
+                <p><strong>Tag:</strong> {{ tag.name }}</p>
+                <p><strong>Posts:</strong> {{ posts|length }}</p>
+            </div>
+
+            <!-- Categories -->
+            <div class="sidebar">
+                <h5><i class="fas fa-folder"></i> Categories</h5>
+                <ul class="category-list">
+                    {% for category in categories %}
+                    <li>
+                        <a href="{{ category.get_absolute_url }}">
+                            {{ category.name }}
+                            <span class="float-end badge bg-secondary">{{ category.posts.count }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

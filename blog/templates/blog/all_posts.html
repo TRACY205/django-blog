@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}All Posts - Django Blog Portfolio{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1><i class="fas fa-list"></i> All Posts</h1>
+        <p>Browse through our complete collection of articles</p>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8">
+            {% if posts %}
+                {% for post in posts %}
+                <div class="row mb-4 post-card" style="border: none; background: white;">
+                    <div class="col-md-4">
+                        {% if post.featured_image %}
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="img-fluid" style="height: 250px; object-fit: cover; border-radius: 8px;">
+                        {% else %}
+                            <div style="width: 100%; height: 250px; background-color: #ecf0f1; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-image" style="font-size: 2.5rem; color: #bdc3c7;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8 p-4">
+                        <h4 class="post-card-title">
+                            <a href="{{ post.get_absolute_url }}" style="color: inherit; text-decoration: none;">{{ post.title }}</a>
+                        </h4>
+                        <div class="post-meta mb-3">
+                            <i class="fas fa-user"></i> {{ post.author.username }}
+                            <span class="ms-3"><i class="fas fa-calendar"></i> {{ post.published_at|date:"M d, Y" }}</span>
+                            <span class="ms-3"><i class="fas fa-folder"></i> <a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a></span>
+                            <span class="views-count"><i class="fas fa-eye"></i> {{ post.views_count }}</span>
+                        </div>
+                        <p class="post-card-excerpt">{{ post.excerpt|truncatewords:30 }}</p>
+                        <a href="{{ post.get_absolute_url }}" class="btn-read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-posts">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No posts found</h3>
+                    <p>There are no posts available yet.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <!-- Categories -->
+            <div class="sidebar mb-4">
+                <h5><i class="fas fa-folder"></i> Categories</h5>
+                {% if categories %}
+                    <ul class="category-list">
+                        {% for category in categories %}
+                        <li>
+                            <a href="{{ category.get_absolute_url }}">
+                                {{ category.name }}
+                                <span class="float-end badge bg-secondary">{{ category.posts.count }}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

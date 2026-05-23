@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Professional Portfolio - Corporate Solutions{% endblock %}</title>
+    <meta name="description" content="{% block description %}Professional corporate portfolio showcasing innovative solutions and services.{% endblock %}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <i class="fas fa-briefcase"></i>
+                    <a href="{% url 'blog:home' %}">PortfolioCorp</a>
+                </div>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="{% url 'blog:home' %}" class="nav-link">Home</a></li>
+                    <li><a href="{% url 'blog:all-posts' %}" class="nav-link">Portfolio</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#team" class="nav-link">Team</a></li>
+                    <li><a href="{% url 'admin:index' %}" class="nav-link">Admin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About PortfolioCorp</h4>
+                    <p>We deliver innovative corporate solutions that transform businesses. With a team of experienced professionals, we're committed to excellence in every project.</p>
+                    <div class="footer-social">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'blog:home' %}">Home</a></li>
+                        <li><a href="{% url 'blog:all-posts' %}">Portfolio</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#team">Team</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Consulting</a></li>
+                        <li><a href="#">Development</a></li>
+                        <li><a href="#">Design</a></li>
+                        <li><a href="#">Marketing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i> 123 Business Street, Suite 100<br>
+                        New York, NY 10001
+                    </p>
+                    <p>
+                        <i class="fas fa-phone"></i> <a href="tel:+1234567890">+1 (234) 567-890</a><br>
+                        <i class="fas fa-envelope"></i> <a href="mailto:info@portfoliocorp.com">info@portfoliocorp.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PortfolioCorp. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
